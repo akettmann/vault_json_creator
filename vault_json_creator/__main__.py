@@ -24,6 +24,7 @@ def main(source: TextIOWrapper, dest: click.utils.LazyFile, model: str, indent: 
     import json
 
     dest.write(parse_funcs[model](json.load(source), indent))
+    click.echo("Finished!")
 
 
 def parse_card_data(source_data: dict, indent: int) -> str:
