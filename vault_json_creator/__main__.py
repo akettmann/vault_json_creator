@@ -28,7 +28,7 @@ def main(source: TextIOWrapper, dest: click.utils.LazyFile, model: str, indent: 
 
 
 def parse_card_data(source_data: dict, indent: int) -> str:
-    from vault_json_creator.models.card_model import AllCards
+    from vault_json_creator.models import AllCards
 
     ac = AllCards(cards=list(source_data.values()))
     pc = ac.make_public_cards()

@@ -3,8 +3,7 @@ from typing import Any, Dict, List, Optional
 
 from pydantic import BaseModel, Field, root_validator, validator
 
-from ..enums.card import CardFields, CardType
-from ..enums.keywords import Keywords
+from ..enums import CardFields, CardType, Keywords
 
 
 class Card(BaseModel):
