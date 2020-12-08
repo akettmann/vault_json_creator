@@ -17,7 +17,7 @@ class Keywords(IntEnum):
     leech = 12
     vulnerable = 13
     unlimited = 14
-    pernament = 15
+    permanent = 15
     unplayable = 16
     hero = 17
     upgradeable = 18

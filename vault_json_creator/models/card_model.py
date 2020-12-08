@@ -3,7 +3,7 @@ from typing import Any, Dict, List, Optional
 
 from pydantic import BaseModel, Field, root_validator, validator
 
-from ..enums import CardFields, CardType, Keywords
+from ..enums import CardFields, CardType, ClassNames, Keywords
 
 
 class Card(BaseModel):
@@ -93,10 +93,16 @@ class PublicCard(BaseModel):
     crarity: int
     keywords: List[Keywords]
 
-    @validator("keywords")
+    @validator("keywords", each_item=True)
+    def fix_character_names(cls, v: Keywords):
+        if v.name in ClassNames.__members__.keys():
+            return ClassNames[v.name].value
+        return v
+
+    @validator("keywords", each_item=True)
     def convert_to_enum_name(cls, v):
-        if isinstance(v, list):
-            return [x.name.capitalize() for x in v]
+        if isinstance(v, Keywords):
+            return v.name.capitalize()
         return v
 
     @validator("ctype")
