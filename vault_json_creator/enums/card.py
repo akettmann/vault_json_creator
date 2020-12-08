@@ -62,3 +62,13 @@ class CardType(IntEnum):
     curse = 21
     futurestrike = 22
     spiritfocus = 23
+
+
+class Rarity(IntEnum):
+    rare = 2
+    uncommon = 3
+    common = 4
+    gempack = 5
+    item = 10
+    weakness = 11
+    secret = 13

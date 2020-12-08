@@ -3,7 +3,8 @@ from typing import Any, Dict, List, Optional
 
 from pydantic import BaseModel, Field, root_validator, validator
 
-from ..enums import CardFields, CardType, ClassNames, Keywords
+from ..enums import CardFields, CardType, ClassNames, Keywords, Rarity
+from .model_utils import convert_to_enum_name
 
 
 class Card(BaseModel):
@@ -51,6 +52,7 @@ class Card(BaseModel):
 
     @validator("keywords", "tags", "upgradetags", pre=True)
     def check_for_empty(cls, v):
+        """ This is to deal with the slightly derpy json output from GMS2"""
         if isinstance(v, float):
             return list()
         return v
@@ -90,7 +92,7 @@ class PublicCard(BaseModel):
     cdesc_upgrade: str
     cenergy: int
     cenergy_upgrade: int
-    crarity: int
+    crarity: Rarity
     keywords: List[Keywords]
 
     @validator("keywords", each_item=True)
@@ -99,15 +101,9 @@ class PublicCard(BaseModel):
             return ClassNames[v.name].value
         return v
 
-    @validator("keywords", each_item=True)
-    def convert_to_enum_name(cls, v):
-        if isinstance(v, Keywords):
-            return v.name.capitalize()
-        return v
-
-    @validator("ctype")
-    def convert_to_single_enum_name(cls, v: CardType):
-        return v.name.capitalize()
+    convert_enums_to_str = validator(
+        "keywords", "crarity", each_item=True, allow_reuse=True
+    )(convert_to_enum_name)
 
 
 class AllPublicCards(BaseModel):
