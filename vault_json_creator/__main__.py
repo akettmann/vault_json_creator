@@ -12,7 +12,7 @@ import click
     "--model",
     help="Model to be used to validate file",
     default="card",
-    type=click.Choice(("card",), case_sensitive=False),
+    type=click.Choice(("card", "tooltip"), case_sensitive=False),
 )
 @click.option(
     "--indent",
@@ -35,6 +35,13 @@ def parse_card_data(source_data: dict, indent: int) -> str:
     return pc.json(indent=indent)
 
 
-parse_funcs = {"card": parse_card_data}
+def parse_tooltip_data(source_data: dict, indent: int) -> str:
+    from vault_json_creator.models import AllTips
+
+    at = AllTips(tips=list(source_data.values()))
+    return at.json(indent=indent)
+
+
+parse_funcs = {"card": parse_card_data, "tooltip": parse_tooltip_data}
 if __name__ == "__main__":
     main()

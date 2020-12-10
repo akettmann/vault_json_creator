@@ -1,4 +1,4 @@
-from typing import Any, Dict
+from typing import Any, Dict, List
 
 from pydantic import BaseModel, root_validator
 
@@ -13,4 +13,8 @@ class Tooltip(BaseModel):
     def convert_keys_to_names(cls, values: Dict[str, Any]):
         # Tooltips seem to be backwards from the way the cards are defined, not sure if
         # this will read right until I get a sample
-        return {TooltipFields(int(v)).name: k for k, v in values.items()}
+        return {TooltipFields(int(k)).name: v for k, v in values.items()}
+
+
+class AllTips(BaseModel):
+    tips: List[Tooltip]
