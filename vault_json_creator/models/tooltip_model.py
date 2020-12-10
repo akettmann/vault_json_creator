@@ -18,3 +18,4 @@ class Tooltip(BaseModel):
 
 class AllTips(BaseModel):
     tips: List[Tooltip]
+    # TODO: Add validator to remove tips that have a name and description of "0.0"
