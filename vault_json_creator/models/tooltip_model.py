@@ -13,8 +13,7 @@ class Tooltip(BaseModel):
 
     @root_validator(pre=True)
     def convert_keys_to_names(cls, values: Dict[str, Any]):
-        # Tooltips seem to be backwards from the way the cards are defined, not sure if
-        # this will read right until I get a sample
+        # Tooltips are backwards from the way the cards are defined
         return {TooltipFields(int(k)).name: v for k, v in values.items()}
 
     @validator("description")
