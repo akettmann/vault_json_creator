@@ -1,6 +1,9 @@
-from io import TextIOWrapper
+from typing import TYPE_CHECKING
 
 import click
+
+if TYPE_CHECKING:
+    from io import TextIOWrapper
 
 
 @click.command()
@@ -20,7 +23,7 @@ import click
     default=2,
     type=click.INT,
 )
-def main(source: TextIOWrapper, dest: click.utils.LazyFile, model: str, indent: int):
+def main(source: "TextIOWrapper", dest: click.utils.LazyFile, model: str, indent: int):
     import json
 
     dest.write(parse_funcs[model](json.load(source), indent))
