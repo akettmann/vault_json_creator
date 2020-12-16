@@ -15,4 +15,4 @@ requires = [
 requires-python=">=3.7"
 
 [tool.flit.scripts]
-vault_json = "vault_json_creator.__main__:main"
+vault_json = "vault_json_creator.cli:parse_and_upload"
