@@ -1,21 +1,26 @@
 from typing import Optional, TYPE_CHECKING
 import sys
+from pathlib import Path
 import click
 
 if TYPE_CHECKING:
     from io import TextIOWrapper
 
+_base_dir = Path.home() / r"AppData\Local\VaultoftheVoid"
+_default_card = _base_dir / "CardData.json"
+_default_tips = _base_dir / "Tooltips.json"
+
 
 @click.command()
 @click.option(
     "--card-source",
-    default="CardData.json",
+    default=str(_default_card),
     help="Name of the card source file",
     type=click.File(),
 )
 @click.option(
     "--tooltip-source",
-    default="Tooltips.json",
+    default=str(_default_tips),
     help="Name of the tooltip source file",
     type=click.File(),
 )
