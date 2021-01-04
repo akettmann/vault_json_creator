@@ -1,8 +1,8 @@
-from typing import Optional, TYPE_CHECKING
 import sys
 from pathlib import Path
-import click
+from typing import Optional, TYPE_CHECKING
 
+import click
 
 if TYPE_CHECKING:
     from io import TextIOWrapper
