@@ -3,8 +3,10 @@ import sys
 from pathlib import Path
 import click
 
+
 if TYPE_CHECKING:
     from io import TextIOWrapper
+    from google.cloud.storage import Blob
 
 _base_dir = Path.home() / r"AppData\Local\VaultoftheVoid"
 _default_card = _base_dir / "CardData.json"
@@ -103,6 +105,7 @@ def write_to_gcs(out_data: str, out_path: str, creds_file: Optional[str]):
     url = urlparse(out_path)
     bucket = client.bucket(url.netloc)
     # Stripping the leading /
+    blob: "Blob"
     blob = bucket.blob(url.path[1:])
     try:
         blob.upload_from_string(out_data, content_type="application/json")
@@ -113,6 +116,7 @@ def write_to_gcs(out_data: str, out_path: str, creds_file: Optional[str]):
             err=True,
         )
         sys.exit(1)
+    blob.make_public()
 
 
 if __name__ == "__main__":
