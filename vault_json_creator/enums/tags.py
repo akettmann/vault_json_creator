@@ -18,7 +18,7 @@ class Tag(IntEnum):
     banish = 13
     consumable = 14
     sinner = 15
-    pernament = 16
+    permanent = 16
     flank = 17
     silence = 18
     strength = 19
