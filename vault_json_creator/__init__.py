@@ -1,3 +1,3 @@
 """Takes raw data dumped from Vault of the Void and turns it into end user consumable
  JSON"""
-__version__ = "0.1.2"
+__version__ = "0.1.3"

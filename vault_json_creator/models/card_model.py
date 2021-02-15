@@ -29,10 +29,10 @@ class Card(BaseModel):
     cdesc_upgrade: str
     cbasedamage_upgrade: int
     csecondbasedamage_upgrade: int
-    tooltipcard: str
+    tooltipcard: Any
     upgradetags: Optional[List[int]] = Field(default_factory=list)
     hidden: bool
-    tooltipcardupgrade: str
+    tooltipcardupgrade: Any
     mastery: str
     basedamagepercent: str
     upgradedamagepercent: str
