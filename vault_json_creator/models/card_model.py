@@ -1,10 +1,13 @@
 import re
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List, Optional, TYPE_CHECKING
 
 from pydantic import BaseModel, Field, root_validator, validator
 
 from ..enums import CardFields, CardType, ClassNames, Keywords, Rarity
 from .model_utils import convert_to_enum_name
+
+if TYPE_CHECKING:
+    from pydantic.fields import ModelField
 
 
 class Card(BaseModel):
@@ -13,7 +16,6 @@ class Card(BaseModel):
     ctype: CardType
     cbasedamage: int
     csecondbasedamage: int
-    cdesc: str
     cenergy: int
     cenergy_upgrade: int
     crarity: int
@@ -26,9 +28,10 @@ class Card(BaseModel):
     slots: str
     keywords: Optional[List[Keywords]] = Field(default_factory=list)
     upgrade: str
-    cdesc_upgrade: str
     cbasedamage_upgrade: int
     csecondbasedamage_upgrade: int
+    cdesc: str
+    cdesc_upgrade: str
     tooltipcard: Any
     upgradetags: Optional[List[int]] = Field(default_factory=list)
     hidden: bool
@@ -58,13 +61,17 @@ class Card(BaseModel):
         return v
 
     @validator("cdesc", "cdesc_upgrade")
-    def _format_description(cls, desc, values):
+    def _format_description(cls, desc, values, field: "ModelField"):
+        if field.name == "cdesc":
+            base_dmg = str(values.get("cbasedamage"))
+            second_base_dmg = str(values.get("csecondbasedamage"))
+        else:
+            base_dmg = str(values.get("cbasedamage_upgrade"))
+            second_base_dmg = str(values.get("csecondbasedamage_upgrade"))
         desc = cls._remove_bracket_re.sub("", desc)
         desc = desc.replace("\n", " ")
-        desc = cls._replace_base_damage.sub(str(values.get("cbasedamage")), desc)
-        desc = cls._replace_second_base_damage.sub(
-            str(values.get("csecondbasedamage")), desc
-        )
+        desc = cls._replace_base_damage.sub(base_dmg, desc)
+        desc = cls._replace_second_base_damage.sub(second_base_dmg, desc)
         desc = desc.replace("$", "X")
         return desc
 
