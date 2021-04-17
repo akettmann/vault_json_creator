@@ -1,5 +1,5 @@
 import re
-from typing import Any, Dict, List, Optional, TYPE_CHECKING
+from typing import Any, Dict, List, Literal, Optional, TYPE_CHECKING, Union
 
 from pydantic import BaseModel, Field, root_validator, validator
 
@@ -16,8 +16,8 @@ class Card(BaseModel):
     ctype: CardType
     cbasedamage: int
     csecondbasedamage: int
-    cenergy: int
-    cenergy_upgrade: int
+    cenergy: Union[int, Literal["X"]]
+    cenergy_upgrade: Union[int, Literal["X"]]
     crarity: int
     ccardart: str
     cattacktype: str
@@ -75,6 +75,15 @@ class Card(BaseModel):
         desc = desc.replace("$", "X")
         return desc
 
+    @validator("cenergy", "cenergy_upgrade")
+    def _replace_x_cost_energy_cost(cls, value: int):
+        # Josh is using 99 for the cost to signify X costs, so changing the value to be
+        # "X" here
+        if value == 99:
+            return "X"
+
+        return value
+
     @property
     def is_public(self):
         if self.hidden or (self.keywords and Keywords.deathknight in self.keywords):
@@ -97,8 +106,8 @@ class PublicCard(BaseModel):
     ctype: CardType
     cdesc: str
     cdesc_upgrade: str
-    cenergy: int
-    cenergy_upgrade: int
+    cenergy: Union[int, Literal["X"]]
+    cenergy_upgrade: Union[int, Literal["X"]]
     crarity: Rarity
     keywords: List[Keywords]
 
