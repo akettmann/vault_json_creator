@@ -35,6 +35,7 @@ class CardFields(IntEnum):
     damagerepeat_upgrade = 30
     firstdamagetype = 31
     seconddamagetype = 32
+    searchterms = 33
 
 
 class CardType(IntEnum):
