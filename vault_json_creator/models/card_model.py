@@ -60,7 +60,6 @@ class Card(BaseModel):
                 continue
             new_vals[name] = v
         return new_vals
-        # return {CardFields(int(k)).name: v for k, v in values.items()}
 
     @validator("keywords", "tags", "upgradetags", pre=True)
     def check_for_empty(cls, v):
