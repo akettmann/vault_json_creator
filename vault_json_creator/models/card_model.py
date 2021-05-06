@@ -51,7 +51,16 @@ class Card(BaseModel):
 
     @root_validator(pre=True)
     def convert_keys_to_names(cls, values: Dict[str, Any]):
-        return {CardFields(int(k)).name: v for k, v in values.items()}
+        new_vals = {}
+        for k, v in values.items():
+            try:
+                name = CardFields(int(k)).name
+            except ValueError:
+                # Ignoring new enums until I am told otherwise
+                continue
+            new_vals[name] = v
+        return new_vals
+        # return {CardFields(int(k)).name: v for k, v in values.items()}
 
     @validator("keywords", "tags", "upgradetags", pre=True)
     def check_for_empty(cls, v):
